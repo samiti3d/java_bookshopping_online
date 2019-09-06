@@ -2,6 +2,8 @@ package com.bookstore.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -59,6 +61,28 @@ public class UserDAOTest {
 	}
 	
 	@Test
+	public void testGetUsersFound(){
+		
+		Integer userId = 9;
+		Users user = userDAO.get(userId);
+		
+		if(user != null) {
+			System.out.println(user.getFullName());
+		}
+		
+		assertNotNull(user);
+	}
+	
+	@Test
+	public void testGetUsersNotFound(){
+		Integer userId = 99;
+		Users user = userDAO.get(userId);
+		
+		assertNull(user);
+		
+	}
+	
+	@Test
 	public void testUpdateUsers() {
         //Entity
 		Users user = new Users();
@@ -75,10 +99,41 @@ public class UserDAOTest {
 		assertEquals(expected, actual);	
 	}
 	
+	@Test
+	public void testDeleteUsers(){
+		
+		Integer userId = 13;
+		userDAO.delete(userId);
+		
+		Users user = userDAO.get(userId);
+		
+		assertNull(user);
+	}
+	
+	@Test
+	public void testListAll(){
+		
+		List<Users> listUsers = userDAO.listAll();
+		
+		for(Users user : listUsers){
+			
+			System.out.println(user.getFullName());
+		}
+		
+		assertTrue(listUsers.size() > 0);
+	}
+	
+	@Test
+	public void testCountAll(){
+		long totalUsers = userDAO.count();
+		assertEquals(7, totalUsers);
+	}
+	
 	@AfterClass
 	public static void tearDownClass() {
 		entityManager.close();
 		entityManagerFactory.close();
 	}
+
 
 }
