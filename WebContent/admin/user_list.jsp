@@ -23,9 +23,9 @@
 		<jsp:directive.include file="navigation.jsp" />
 		<hr />
 		
-		<h2><a href="user_form.jsp">Create New User</a></h2>
-		<c:if test="${ message != null }">
-			<p>${ status }</p>
+		<h2><a href="user_form.jsp">[  Create New User ]</a></h2>
+		<c:if test="${ status != null }">
+			<p>${ status}</p>
 		</c:if>
 		<table class="table">
 		  <thead>
@@ -45,8 +45,8 @@
 						<td>${user.fullName }</td>
 						<td>${user.email }</td>
 						<td>
-							<a href="">Edit</a> |
-							<a href="">Delete</a>
+							<a href="edit_user?id=${user.userId }">Edit</a> |
+							<a href="delete_user?id=${user.userId }" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
 						</td>
 					</tr>
 				</c:forEach>

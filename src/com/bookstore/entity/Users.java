@@ -10,7 +10,8 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u ORDER BY u.fullName"),
+	@NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u ORDER BY u.userId DESC"),
+	@NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
 	@NamedQuery(name = "Users.countAll", query = "SELECT count(*) FROM Users u ")
 
 })
@@ -25,6 +26,11 @@ public class Users {
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public Users(Integer userId, String email, String fullName, String password) {
+		this(email, fullName, password);
+		this.userId = userId;
 	}
 
 	public Users(String email, String fullName, String password) {

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,25 +24,35 @@
 		<jsp:directive.include file="navigation.jsp" />
 		<hr />
 		<div class="row">
+		<c:if test="${status != null }">${status }</c:if>
+		</div>
+		<div class="row">
 			<div class="col-md-12">
-				<h2>Add User</h2>
-				<form action="create_user" method="post" onsubmit="return validateFormInput()">
+				<c:if  test="${user != null }">
+					<h2>Edit User</h2>
+					<form action="update_user" method="post" onsubmit="return validateFormInput()">	
+					<input type="hidden" name="userId" value="${user.userId}" />
+				</c:if>
+				<c:if  test="${user == null }">
+					<h2>Create User</h2>
+					<form action="create_user" method="post" onsubmit="return validateFormInput()">
+				</c:if> 
 					<div class="form-group">
 						<label for="exampleInputEmail1">Full Name</label> <input
 							type="text" name="fullname" class="form-control" id="fullname"
-							aria-describedby="emailHelp" placeholder="Full Name">
+							aria-describedby="emailHelp" placeholder="Full Name"  value="${user.fullName }">
 					</div>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Email address</label> <input
 							type="email" name="email" class="form-control" id="email"
-							aria-describedby="emailHelp" placeholder="Enter Email"> <small
-							id="emailHelp" class="form-text text-muted">We'll never
+							aria-describedby="emailHelp" placeholder="Enter Email"  value="${user.email }"> <small
+							id="emailHelp" class="form-text text-muted"  >We'll never
 							share your email with anyone else.</small>
 					</div>
 					<div class="form-group">
 						<label for="exampleInputPassword1">Password</label> <input
 							type="password"  name="password" class="form-control"  id="password"
-							placeholder="Password">
+							placeholder="Password" value="${user.password }">
 					</div>
 				
 					<button type="submit" class="btn btn-primary">Submit</button>

@@ -9,19 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bookstore.service.UserServices;
 
-@WebServlet("/admin/list_users")
-public class ListUsersServlet extends HttpServlet {
+
+@WebServlet("/admin/update_user")
+public class UpdateUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public ListUsersServlet() {
+    public UpdateUserServlet() {
         super();
-        
     }
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserServices userServices = new UserServices(request, response);
-		response.setCharacterEncoding("UTF-8");
-		userServices.listUser(null);
-	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		UserServices userServices = new UserServices(request,response);
+		userServices.updateUser();
+	}
 
 }
