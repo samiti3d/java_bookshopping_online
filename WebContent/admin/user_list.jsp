@@ -46,7 +46,9 @@
 						<td>${user.email }</td>
 						<td>
 							<a href="edit_user?id=${user.userId }">Edit</a> |
-							<a href="delete_user?id=${user.userId }" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+							<a href="delete_user?id=${user.userId }" 
+							onclick="if(${user.userId}==38){ alert('Sorry, You cannot delete Admin ID')
+							return false }else{ return confirm('Confirm again to delete this user');}">Delete</a>
 						</td>
 					</tr>
 				</c:forEach>

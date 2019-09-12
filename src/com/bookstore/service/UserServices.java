@@ -17,19 +17,17 @@ import com.bookstore.entity.Users;
 
 public class UserServices {
 	
-	private EntityManagerFactory entityManagerFactory;
-	private EntityManager entityManager;
 	private UserDAO userDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
+	private EntityManager entityManager;
 	
-	public UserServices(HttpServletRequest request,  HttpServletResponse response) {
+	public UserServices(HttpServletRequest request,  HttpServletResponse response, EntityManager entityManager) {
 		
 		this.request = request;
 		this.response = response;
-		entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
-		entityManager = entityManagerFactory.createEntityManager();
-		
+		this.entityManager = entityManager;
+	
 		userDAO = new UserDAO(entityManager);
 	}
 	
@@ -51,7 +49,7 @@ public class UserServices {
 		requestDispatcher.forward(request,response);		
 	}
 	
-	public void listUser(String message, String page) throws ServletException, IOException{
+	public void listUserByPage(String message, String page) throws ServletException, IOException{
 		
 		List<Users> listUsers = userDAO.listAll();
 		
@@ -116,7 +114,7 @@ public class UserServices {
 		
 		if(userByEmail != null && userByEmail.getUserId() != userById.getUserId()){
 			String message = "Coudn't update the user";
-			listUser(message, "user_form.jsp");
+			listUserByPage(message, "user_form.jsp");
 	
 		}else{
 			Users user = new Users(userId, email, fullName, password);
@@ -129,10 +127,20 @@ public class UserServices {
 	}
 
 	public void deleteUser() throws ServletException, IOException {
+		
 		int userId = Integer.parseInt(request.getParameter("id"));
-		userDAO.delete(userId);
-		String message = "User has been deleted";
-		listUser(message, "user_list.jsp");		
+		Users userById = userDAO.get(userId);
+		
+		if(userById == null) {
+			String message = "Sorry, The user does not exist.";
+			listUserByPage(message, "user_list.jsp");	
+			
+		}else {
+			userDAO.delete(userId);
+			String message = "User has been deleted";
+			listUserByPage(message, "user_list.jsp");	
+		}
+	
 	}
 
 }
