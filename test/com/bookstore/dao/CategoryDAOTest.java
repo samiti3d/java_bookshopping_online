@@ -88,5 +88,15 @@ public class CategoryDAOTest extends BaseDAOTest{
 		assertEquals(0, catCount);
 	}
 	
+	@Test
+	public void testFindByName(){
+		
+		String catName = "Java Core";
+		Category findCatname = categoryDAO.findByName(catName);
+		
+		assertNotNull(findCatname);
+	
+	}
+	
 
 }

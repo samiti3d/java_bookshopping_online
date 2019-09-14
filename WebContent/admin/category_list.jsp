@@ -22,7 +22,8 @@
 		<hr />
 		<jsp:directive.include file="navigation.jsp" />
 		<hr />
-		<h2>Category Lists</h2>
+		<c:if test="${status !=null }"><p>${status }</p></c:if>
+		<a href="category_form.jsp"><h2>[ Create Category ]</h2></a>
 		<table class="table">
 			<thead>
 				<tr>
@@ -38,8 +39,8 @@
 						<td>${status.index + 1 }</td>
 						<td>${cat.categoryId }</td>
 						<td>${cat.name }</td>
-						<td><a href="edit_user?id=${cat.categoryId }">Edit</a> | <a
-							href="delete_user?id=${cat.categoryId }"
+						<td><a href="edit_category?id=${cat.categoryId }">Edit</a> | <a
+							href="delete_category?id=${cat.categoryId }"
 							onclick="return confirm('Confirm again to delete this category.')">Delete</a>
 						</td>
 					</tr>

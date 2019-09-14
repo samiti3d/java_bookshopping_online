@@ -39,6 +39,70 @@ public class CategoryServices  {
 		
 	}
 	
+	public void createCategory() throws ServletException, IOException{
+		String category = request.getParameter("category");
+		
+		Category categoryExist = categoryDAO.findByName(category);
+		String status = "Couldn't create the category";
+		
+		if(categoryExist != null){
+			request.setAttribute("message", status);
+			
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("category_form.jsp");
+			requestDispatcher.forward(request, response);
+			
+		}else{
+			
+			Category newCategory = new Category(category);
+			String message = "Category has been created";
+			categoryDAO.create(newCategory);
+			request.setAttribute("status", message);
+			listCategory();
+			
+		}
+		
+	}
+
+	public void editCategory() throws ServletException, IOException {
+		int categoryById = Integer.parseInt(request.getParameter("id"));
+		
+		if(categoryById == (int)categoryById ){
+			Category category = categoryDAO.get(categoryById);
+			request.setAttribute("category", category);
+			
+			String page = "category_form.jsp";
+			
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
+			requestDispatcher.forward(request, response);
+		}
+	}
+	
+	public void updateCategory() throws ServletException, IOException{
+		int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+		String categoryName = request.getParameter("category");
+		
+		Category categoryById = categoryDAO.get(categoryId);
+		Category categoryByName = categoryDAO.findByName(categoryName);
+				
+		if(categoryByName != null && categoryById.getCategoryId() != categoryByName.getCategoryId()){
+			request.setAttribute("status", "This category has been existed");
+			request.setAttribute("category", categoryById);
+			
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("category_form.jsp");
+			requestDispatcher.forward(request, response);
+			
+			
+			
+		}else {
+			categoryById.setName(categoryName);
+			categoryDAO.update(categoryById);
+			
+			request.setAttribute("status", "Category Updated!");
+			listCategory();
+		}
+		
+	}
+	
 	
 
 }
