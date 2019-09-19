@@ -64,16 +64,25 @@ public class CategoryServices  {
 	}
 
 	public void editCategory() throws ServletException, IOException {
-		int categoryById = Integer.parseInt(request.getParameter("id"));
+		int categoryId = Integer.parseInt(request.getParameter("id"));
+		Category categoryExist = categoryDAO.get(categoryId);
 		
-		if(categoryById == (int)categoryById ){
-			Category category = categoryDAO.get(categoryById);
+		if(categoryExist != null ){
+			Category category = categoryDAO.get(categoryId);
 			request.setAttribute("category", category);
 			
 			String page = "category_form.jsp";
 			
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
 			requestDispatcher.forward(request, response);
+			
+		}else{
+			
+			request.setAttribute("status", "Sorry, This Id - " 
+			+ categoryId + " does not exist!");
+			
+			listCategory();
+			
 		}
 	}
 	
@@ -100,6 +109,24 @@ public class CategoryServices  {
 			request.setAttribute("status", "Category Updated!");
 			listCategory();
 		}
+		
+	}
+
+	public void deleteCategory() throws ServletException, IOException {
+		
+		int categoryId = Integer.parseInt(request.getParameter("id"));
+		Category categoryById = categoryDAO.get(categoryId);
+		
+		if(categoryById != null){
+			
+			categoryDAO.delete(categoryId);
+			request.setAttribute("status", "User ID " + categoryId + " has been deleted");
+		}else{
+			
+			request.setAttribute("status", "No Category ID " + categoryId +  "found");
+		}
+		
+		listCategory();
 		
 	}
 	

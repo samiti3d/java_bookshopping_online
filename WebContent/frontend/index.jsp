@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,10 +33,38 @@ body {
 <body>
 
 	<jsp:directive.include file="header/navigation.jsp" />
-	<!-- Page Content -->
-
 	<div class="container">
-		<h3 class="h3">New Arrivals</h3>
+		<div class="row">
+			<div class="col"></div>
+			<div class="col-ms-8">
+				<form class="form-inline justify-content-center">
+			 		  <div class="form-group form-group-lg mx-lg-12 my-3 text-center">
+	    					<label for="inputPassword2" class="sr-only">Password</label>
+	    					<input type="text" class="form-control" id="textSearch" placeholder="Searching Items" size="40">
+	  					</div>
+	  					<button size="5" type="submit" class="btn btn-primary">Search</button>
+			    </form>
+			 </div>
+			 <div class="col"></div>
+	    </div>
+  </div>
+	
+	</div>
+	
+	<div class="container">
+  		<ul class="list-inline d-flex justify-content-center mb-5">
+				<c:forEach  var="category"  items="${listCategory }" varStatus="status">
+				 <li class="list-inline-item">
+						<a href="view_category?id=${category.categoryId }">
+							<font size="+1"><b><c:out  value="${category.name }" /> </b></font>
+						</a>
+						<c:if test="${ not status.last }">
+							&nbsp; | &nbsp; 
+						</c:if>
+					</li>
+				</c:forEach>			
+		</ul>
+		<h3 class="h3">New Arrivals :)</h3>
 		<div class="row">
 			<div class="col-md-3 col-sm-6">
 				<div class="product-grid3">

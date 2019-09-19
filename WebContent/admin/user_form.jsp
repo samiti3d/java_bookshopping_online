@@ -30,12 +30,12 @@
 			<div class="col-md-12">
 				<c:if  test="${user != null }">
 					<h2>Edit User</h2>
-					<form action="update_user" method="post" onsubmit="return validateFormInput()">	
+					<form id="user_form" action="update_user" method="post" >	
 					<input type="hidden" name="userId" value="${user.userId}" />
 				</c:if>
 				<c:if  test="${user == null }">
 					<h2>Create User</h2>
-					<form action="create_user" method="post" onsubmit="return validateFormInput()">
+					<form  id="user_form" action="create_user" method="post" >
 				</c:if> 
 					<div class="form-group">
 						<label for="exampleInputEmail1">Full Name</label> <input
@@ -65,36 +65,29 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
 		integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
 		crossorigin="anonymous">
-		
-	</script>
+	</script> 
+   <script  src="../js/jquery.validate.min.js" type="text/javascript"></script>
 	<script src="../js/admin.js">
 	</script>
+	
 	<script type="text/javascript">
-		function validateFormInput(){
-				var fieldEmail = document.getElementById("email");
-				var fieldFullName = document.getElementById("fullname");
-				var fieldPassword = document.getElementById("password");
-
-				if(fieldEmail.value.length == 0 ){
-					alert("Email is required");
-					fieldEmail.focus();
-					return false;
-				}
-				
-				if(fieldFullName.value.length == 0 ){
-					alert("Full Name is required");
-					fieldFullName.focus();
-					return false;
-				}
-				
-				if(fieldPassword.value.length == 0 ){
-					alert("Password is required");
-					fieldPassword.focus();
-					return false;
-				}
-				
-				return true;
-		}
+		$(document).ready(function() {
+			$("#user_form").validate({
+					rules: {
+						fullname: "required",
+						password: "required",
+						email: {
+							required: true,
+							email: true
+						}
+					},
+					messages: {
+						fullname: "Please enter your firstname",
+						password: "Please enter password",
+						email: "Please enter email"
+					}
+				});
+			}); 
 	</script>
 </body>
 </html>

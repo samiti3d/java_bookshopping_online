@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +18,7 @@
 	<div class="container">
 		<h2>Administrative Dashboard</h2>
 		<p>
-			Welcome Admin :) | <a href="logout">Logout</a>
+			Welcome <b></b><c:out  value="${sessionScope.email }" /></b> | <a href="logout">Logout</a>
 		</p>
 		<hr />
 		<jsp:directive.include file="navigation.jsp" />
