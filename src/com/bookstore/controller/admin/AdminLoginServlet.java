@@ -1,6 +1,8 @@
 package com.bookstore.controller.admin;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,11 +19,17 @@ public class AdminLoginServlet extends BaseServlet {
     public AdminLoginServlet() {
         super();
     }
-
+   
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		UserServices userServices = new UserServices(request, response, entityManager);
-		userServices.logIn();
+		try {
+			userServices.logIn();
+		} catch (GeneralSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	
 	}
 

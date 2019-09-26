@@ -17,9 +17,7 @@
 <body>
 	<div class="container">
 		<h2>Administrative Dashboard</h2>
-		<p>
-			Welcome <b></b><c:out  value="${sessionScope.email }" /></b> | <a href="logout">Logout</a>
-		</p>
+		<jsp:directive.include file="welcome_logout.jsp" />
 		<hr />
 		<jsp:directive.include file="navigation.jsp" />
 		<hr />

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>User Lists - Admin Dashboard</title>
+<title>Book Lists - Admin Dashboard</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -21,7 +21,7 @@
 		<jsp:directive.include file="navigation.jsp" />
 		<hr />
 		
-		<h2><a href="user_form.jsp">[  Create New User ]</a></h2>
+		<h2><a href="book_form.jsp">[  Create New Book ]</a></h2>
 		<c:if test="${ status != null }">
 			<p>${ status}</p>
 		</c:if>
@@ -29,19 +29,31 @@
 		  <thead>
 		    <tr>
 		      <th scope="col">#</th>
-		      <th scope="col">user id</th>
-		      <th scope="col">full name</th>
-		      <th scope="col">email</th>
-		      <th scope="col">edit</th>
+		      <th scope="col">ID</th>
+		      <th scope="col">Image</th>
+		      <th scope="col">Title</th>
+		      <th scope="col">Author</th>
+		      <th scope="col">Category</th>
+		      <th scope="col">Price</th>
+		      <th scope="col">ISBN</th>
+		      <th scope="col">Last Updated</th>
+		      <th scope="col">Actions</th>
 		    </tr>
 		  </thead>
 		  <tbody>
-				<c:forEach var="user" items="${listUsers }" varStatus="status">
+				<c:forEach var="book" items="${listBooks }" varStatus="status">
 					<tr>
 						<td>${status.index }</td>
-						<td>${user.userId }</td>
-						<td>${user.fullName }</td>
-						<td>${user.email }</td>
+						<td>${book.bookId }</td>
+						<td>
+							<img src="data:image/jpg;base64, ${book.base64Image }" />
+						</td>
+						<td>${book.title }</td>
+						<td>${book.author}</td>
+						<td>${book.category.name }</td>
+						<td>${book.price }</td>
+						<td>${book.isbn }</td>
+						<td>${book.lastUpdateTime }</td>
 						<td>
 							<a href="edit_user?id=${user.userId }">Edit</a> |
 							<a href="delete_user?id=${user.userId }" 

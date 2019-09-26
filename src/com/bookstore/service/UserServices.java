@@ -2,6 +2,8 @@ package com.bookstore.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bookstore.dao.HashGenerator;
 import com.bookstore.dao.UserDAO;
 import com.bookstore.entity.Users;
 
@@ -94,21 +97,31 @@ public class UserServices {
 		int userId = Integer.parseInt(request.getParameter("id"));
 		Users userById = userDAO.get(userId);
 	
-		if(userById != null){
-			String editPage = "user_form.jsp";
+//		if(userById != null){
+//			String editPage = "user_form.jsp";
+//			request.setAttribute("user", userById);
+//			RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage );
+//			requestDispatcher.forward(request, response);
+//		}
+		
+		if(userById == null){
+			request.setAttribute("status", "Cannot find the user.");
+
+		}else{
+			userById.setPassword(null);
 			request.setAttribute("user", userById);
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage );
-			requestDispatcher.forward(request, response);
 		}
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("user_form.jsp");
+			requestDispatcher.forward(request, response);
 	}
 
-	public void updateUser() throws ServletException, IOException {
+	public void updateUser() throws ServletException, IOException, NoSuchAlgorithmException {
 		
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		String email = request.getParameter("email");
 		String fullName = request.getParameter("fullname");
 		String password = request.getParameter("password");
-		
+				
 		Users userById = userDAO.get(userId);
 		Users userByEmail = userDAO.findByEmail(email);
 		
@@ -117,8 +130,18 @@ public class UserServices {
 			listUserByPage(message, "user_form.jsp");
 	
 		}else{
-			Users user = new Users(userId, email, fullName, password);
-			userDAO.update(user);
+//			Users user = new Users(userId, email, fullName, password);
+			userById.setFullName(email);
+			userById.setFullName(fullName);
+			
+			if(password != null && !password.isEmpty()){
+				
+				String encryptedPassword = HashGenerator.generateMD5(password);	
+				userById.setPassword(encryptedPassword);
+				System.out.println("encrypted password...");
+			}
+			
+			userDAO.update(userById);
 			
 			String message = "User has been updated successfully";
 			listUser(message);				
@@ -143,25 +166,28 @@ public class UserServices {
 	
 	}
 
-	public void logIn() throws ServletException, IOException {
+	public void logIn() throws ServletException, IOException, GeneralSecurityException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		Boolean checkUser = userDAO.checkUserLogin(email, password);
+		System.out.println("this is password: " + password);
 		
-		if(checkUser){
+		boolean loginResult = userDAO.checkUserLogin(email, password);
+		
+		System.out.println("boolean: " + loginResult);
+		
+		if(loginResult){
 			
 			request.getSession().setAttribute("email", email);
 			request.setAttribute("status", "You have been logged in.");
 			
 			//GET Method
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin/");
 			requestDispatcher.forward(request, response);
 			
 		}else {
 			
-			request.setAttribute("status", "You cannot login!");
-			
+			request.setAttribute("status", "login failed");
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
 			requestDispatcher.forward(request, response);
 			

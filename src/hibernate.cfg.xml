@@ -30,7 +30,5 @@
       create-drop
       </property>
       
-      <!-- List of XML mapping files -->
-      
    </session-factory>
 </hibernate-configuration>

@@ -2,6 +2,8 @@ package com.bookstore.dao;
 
 import static org.junit.Assert.*;
 
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -31,13 +33,18 @@ public class UserDAOTest {
 	
 
 	@Test
-	public void test() {
+	public void test() throws NoSuchAlgorithmException {
 
 		Users user1 = new Users();
 
-		user1.setFullName("celica rov23");
-		user1.setEmail("celica123_23@gmail.com");
-		user1.setPassword("123456789");
+		user1.setFullName("admin");
+		user1.setEmail("admin@gmail.com");
+		
+		String password = "admin";
+		
+		String hashPassword = HashGenerator.generateMD5(password);
+		
+		user1.setPassword(hashPassword);
 
 		//Move to @BeforeClass
 //		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
@@ -47,6 +54,8 @@ public class UserDAOTest {
 //		entityManager.getTransaction().begin();
 //		entityManager.persist(user1);
 //		entityManager.getTransaction().commit();
+		
+		
 		
 		user1 = userDAO.create(user1);
 
@@ -138,11 +147,25 @@ public class UserDAOTest {
 	}
 	
 	@Test
-	public void testUsersLogin(){
-		String email = "admin38@gmail.com ";
-		String password = "natchanongood";
+	public void testUsersLogin() throws NoSuchAlgorithmException{
+		String email = "admin@gmail.com ";
+		String password = "admin";
 		
-		boolean checkLogin = userDAO.checkUserLogin(email, password);
+		boolean checkLogin = false;
+		
+//		String encryptedPassword = HashGenerator.generateMD5(password);
+		
+		System.out.println(password);
+		checkLogin = userDAO.checkUserLogin(email, password);
+		
+		if(checkLogin) {
+			
+			System.out.println("use dao passed");
+
+		}
+		
+		
+		
 		assertTrue(checkLogin);
 		
 	}

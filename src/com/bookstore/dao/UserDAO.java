@@ -1,5 +1,6 @@
 package com.bookstore.dao;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +13,23 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 
 	public UserDAO(EntityManager entitymanager) {
 		super(entitymanager);
-		// TODO Auto-generated constructor stub
 	}
 
-	public Users create(Users user) {
+	public Users create(Users user){
+		String encryptedPassword;
+		
+		try {
+			
+			encryptedPassword = HashGenerator.generateMD5(user.getPassword());
+			user.setPassword(encryptedPassword);
+		
+		} catch (NoSuchAlgorithmException e) {
+			
+			e.printStackTrace();
+		}
+		
 		return super.create(user);
+
 	}
 	
 	@Override
@@ -54,11 +67,17 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 		return null;
 	}
 	
-	public boolean checkUserLogin(String email, String password){
+	public boolean checkUserLogin(String email, String password) throws NoSuchAlgorithmException{
 		
+		System.out.println("checkuserlogin dao: " + password);
 		Map<String, Object> parameters = new HashMap<>();
+		
+		String encryptedPassword = HashGenerator.generateMD5(password);
+		
+		System.out.println("Encrypted Password: " + encryptedPassword);
+		
 		parameters.put("email", email);
-		parameters.put("password", password);
+		parameters.put("password", encryptedPassword);
 		
 		List<Users>listUsers = super.findWithNamedQuery("Users.checkLogin", parameters);
 		
@@ -67,6 +86,7 @@ public class UserDAO extends JpaDAO<Users> implements GenericDAO<Users> {
 		}
 		
 		return false;
+		
 		
 	}
 	

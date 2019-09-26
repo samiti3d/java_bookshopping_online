@@ -8,7 +8,7 @@ public class CategoryTest {
 
 	public static void main(String[] args) {
 
-		Category category = new Category("Core Java");
+		Category category = new Category("Lazada");
 		
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
