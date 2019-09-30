@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +22,7 @@
 		<jsp:directive.include file="navigation.jsp" />
 		<hr />
 		
-		<h2><a href="book_form.jsp">[  Create New Book ]</a></h2>
+		<h2><a href="new_book">[  Create New Book ]</a></h2>
 		<c:if test="${ status != null }">
 			<p>${ status}</p>
 		</c:if>
@@ -46,18 +47,18 @@
 						<td>${status.index }</td>
 						<td>${book.bookId }</td>
 						<td>
-							<img src="data:image/jpg;base64, ${book.base64Image }" />
+							<img src="data:image/jpg;base64, ${book.base64Image }"  style="width: 80%;"/>
 						</td>
 						<td>${book.title }</td>
 						<td>${book.author}</td>
 						<td>${book.category.name }</td>
 						<td>${book.price }</td>
 						<td>${book.isbn }</td>
-						<td>${book.lastUpdateTime }</td>
+						<td><fmt:formatDate  pattern='MM/DD/YYYY'  value='${book.lastUpdateTime }' /></td>
 						<td>
-							<a href="edit_user?id=${user.userId }">Edit</a> |
-							<a href="delete_user?id=${user.userId }" 
-							onclick="if(${user.userId}==38){ alert('Sorry, You cannot delete Admin ID')
+							<a href="edit_book?id=${book.bookId }">Edit</a> |
+							<a href="delete_book?id=${book.bookId }" 
+							onclick="if(${book.bookId}==38){ alert('Sorry, You cannot delete Admin ID')
 							return false }else{ return confirm('Confirm again to delete this user');}">Delete</a>
 						</td>
 					</tr>

@@ -36,24 +36,27 @@ public class AdminLoginFilter implements Filter {
 		
 		System.out.println(loginRequest);
 		
-//		if(loggedIn && loginPage){
-//	
-//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin/");
-//			requestDispatcher.forward(request, response);
-//			
-//		} else 
-		if(loggedIn || loginRequest) {
+		if(loggedIn && loginPage){
+	
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin/");
+			requestDispatcher.forward(request, response);
+			
+		} else if(loggedIn || loginRequest) {
 			
 			System.out.println("Admin Filter...");
 			chain.doFilter(request, response);
 			
-		}else{
-			
-			request.setAttribute("status", "You cannot enter to this area.");
+		}else if(!loggedIn && loginPage){
 			
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
 			requestDispatcher.forward(request, response);
 			
+		}else{
+			
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
+			requestDispatcher.forward(request, response);
+			
+			request.setAttribute("status", "You cannot enter to this area.");
 		}
 
 	}

@@ -2,6 +2,7 @@
 h1.page-header {
     margin-top: -5px;
 }
+.error{ color:red; }
 
 .sidebar {
     padding-left: 0;
@@ -146,9 +147,7 @@ h1.page-header {
 	padding: 15px 18px;
 }
 /* Main body section */
-.side-body {
-	margin-left: 310px;
-}
+
 /* small screen */
 @media (max-width: 768px) {
 	.side-menu {
@@ -170,6 +169,8 @@ h1.page-header {
 		display: inline-block;
 	}
 	/* Slide in animation */
+	
+	/* Form */
 	@-moz-keyframes slidein {
 		0% {
 			left: -300px;
