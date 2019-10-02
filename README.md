@@ -12,3 +12,6 @@
 
 เป็นต้น
 E-commerce System by sAmiti
+
+#sponsored by
+1. คุณฐาปนา ******ตย์
