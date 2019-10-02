@@ -188,25 +188,38 @@ public class BookDAOTest extends BaseDAOTest {
 	@Test 
 	public void equlTest() {
 		
-		//Find old one
-		String title = "Julia Book";
+		String title = "robocop";
 		Book bookByTitle = bookDAO.findByTitle(title);
 		int bookId = bookByTitle.getBookId();
-		
-		//The updating one robocop title
-		Book existBook = bookDAO.get(40);
-		
-		System.out.println("Find : " + bookByTitle.getTitle());
-		
-//		if(!existBook.equals(bookByTitle)) {
-//			System.out.println("มี");
-//		}
-		
 		System.out.println(bookId);
-		System.out.println(existBook.getBookId());
-		if(bookId == existBook.getBookId()) {
-			System.out.println("title same");
+		
+		Book book = bookDAO.get(40);
+		
+		if(book.getBookId() != bookId) {
+			System.out.println("diff");
+			return;
 		}
+		
+		System.out.println("the same");
+		
+	}
+	
+	@Test 
+	public void equlxTest() {
+		
+		String title = "robocop";
+		Book bookByTitle = bookDAO.findByTitle(title);
+		int bookId = bookByTitle.getBookId();
+		System.out.println(bookId);
+		
+		Book book = bookDAO.get(35);
+		
+		if(!book.equals(bookByTitle)) {
+			System.out.println("diff");
+			return;
+		}
+		
+		System.out.println("the same");
 		
 	}
 	

@@ -143,14 +143,19 @@ public class BookServices {
 	}
 
 	public void updateBook() throws IOException, ServletException {
+		
 		int bookId = Integer.parseInt(request.getParameter("bookId"));
 		String title = request.getParameter("title");
-		Book existBook = bookDAO.get(bookId);
-		
-		//Title
 		Book bookTitle = bookDAO.findByTitle(title);
+
+		Book existBook = bookDAO.get(bookId);		
 		
-		if(!existBook.equals(bookTitle)) {
+		if(existBook == null) {
+			String message = "No Book ID found!";
+			listBooks(message);
+		}
+				
+		if(!existBook.equals(bookTitle) && bookTitle != null) {
 			System.out.println("Cannot update book!...");
 			String message = "Cannot save the title, Please check!";
 			listBooks(message);
@@ -161,8 +166,21 @@ public class BookServices {
 		bookDAO.update(existBook);
 		String message = "Updated Book successfully";
 		listBooks(message);
-		
+			
+	}
 
+	public void deleteBook() throws ServletException, IOException {
+		int bookId = Integer.parseInt(request.getParameter("id"));
+		Book existBook = bookDAO.get(bookId);
+		if(existBook != null) {
+			bookDAO.delete(bookId);
+			String message = "The book is deleted complately";
+			listBooks(message);
+		}else {
+			String message = "No book found! please check other.";
+			listBooks(message);
+		}
+		
 	}
 
 }
