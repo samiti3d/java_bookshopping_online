@@ -22,14 +22,12 @@ public class AdminLoginServlet extends BaseServlet {
    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		UserServices userServices = new UserServices(request, response, entityManager);
+		UserServices userServices = new UserServices(request, response);
 		try {
 			userServices.logIn();
 		} catch (GeneralSecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	
 	}
 

@@ -16,6 +16,7 @@
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css"
 	rel="stylesheet" type="text/css" />
 <link href="../css/admin.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css">
 </head>
 <body>
 	<div class="container">
@@ -28,7 +29,7 @@
 			<c:if test="${status != null }">${status }</c:if>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-5">
 				<c:if test="${book != null }">
 					<h2>Edit Book</h2>
 					<form id="book_form"  action="update_book" method="post"  enctype="multipart/form-data">
@@ -36,7 +37,7 @@
 				</c:if>
 				<c:if test="${book == null }">
 					<h2>Create New Book</h2>
-					<form id="book_form"  action="create_book" method="post"  enctype="multipart/form-data">
+					<form id="book_form"  class="summernote" action="create_book" method="post"  enctype="multipart/form-data">
 				</c:if>
 				<div class="form-group">
 					<label for="bookTitle">Title</label> 
@@ -53,11 +54,10 @@
 				</div>
 				<div class="form-group">
 					<label for="description">Description</label>
-					<textarea class="form-control" rows="5" name="description"  id="description"
-						placeholder="description" >${book.description}</textarea>
+					<textarea name="description"  id="my-summernote">${book.description}</textarea>
 				</div>
 				<div class="form-group">
-					<label for="exampleInputPassword1">Isbn</label> 
+					<label for="exampleInputPassword1">ISBN</label> 
 					<input type="text"
 						name="isbn" class="form-control" id="isbn" placeholder="isbn"
 						value="${book.isbn }">
@@ -116,17 +116,58 @@
 			</div>
 		</div>
 	</div>
-
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
 		integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
 		crossorigin="anonymous">
-		
 	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs4-summernote@0.8.10/dist/summernote-bs4.min.js"></script>
+	<script>
+        $(document).ready(function() {
+            $('#my-summernote').summernote({
+                height: 300,   //set editable area's height
+            });
+        });
+    </script> 
+
 	<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js"
 		type="text/javascript"></script>
 	<script src="../js/jquery.validate.min.js" type="text/javascript"></script>
 	<script src="../js/admin.js"></script>
-
+<!-- 	<script>
+		$(document).ready(function(){
+			$('#my-summernote').summernote({
+				  minHeight: 200,
+				  placeholder: 'Write here ...',
+				  focus: false,
+				  airMode: false,
+				  fontNames: ['Roboto', 'Calibri', 'Times New Roman', 'Arial'],
+				  fontNamesIgnoreCheck: ['Roboto', 'Calibri'],
+				  dialogsInBody: true,
+				  dialogsFade: true,
+				  disableDragAndDrop: false,
+				  toolbar: [
+				    // [groupName, [list of button]]
+				    ['style', ['bold', 'italic', 'underline', 'clear']],
+				    ['para', ['style', 'ul', 'ol', 'paragraph']],
+				    ['fontsize', ['fontsize']],
+				    ['font', ['strikethrough', 'superscript', 'subscript']],
+				    ['height', ['height']],
+				    ['misc', ['undo', 'redo', 'print', 'help', 'fullscreen']]
+				  ],
+				  popover: {
+				    air: [
+				      ['color', ['color']],
+				      ['font', ['bold', 'underline', 'clear']]
+				    ]
+				  },
+				  print: {
+				    //'stylesheetUrl': 'url_of_stylesheet_for_printing'
+				  }
+				});
+				$('#my-summernote2').summernote({airMode: true,placeholder:'Try the airmode'});		});
+	</script> -->
 	<script type="text/javascript">
 		$('#publishDate').datepicker({
 			uiLibrary : 'bootstrap4'

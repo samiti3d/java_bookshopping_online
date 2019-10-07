@@ -18,7 +18,7 @@ import com.bookstore.service.BookServices;
 		maxFileSize = 1024*300, //300kb
 		maxRequestSize = 1024*1024 //1mb
 )
-public class CreateBookServlet extends BaseServlet {
+public class CreateBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
@@ -27,7 +27,7 @@ public class CreateBookServlet extends BaseServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BookServices bookServices = new BookServices(request, response, entityManager);
+		BookServices bookServices = new BookServices(request, response);
 		bookServices.creatBook();
 	}
 

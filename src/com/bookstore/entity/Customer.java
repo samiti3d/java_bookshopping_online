@@ -23,6 +23,10 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "customer", catalog = "bookstoredb", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Customer implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer customerId;
 	private String email;
 	private String firstname;
@@ -34,7 +38,6 @@ public class Customer implements java.io.Serializable {
 	private String zipcode;
 	private String password;
 	private Date registerDate;
-	private String customercol;
 	private Set<Review> reviews = new HashSet<Review>(0);
 	private Set<BookOrder> bookOrders = new HashSet<BookOrder>(0);
 
@@ -42,7 +45,7 @@ public class Customer implements java.io.Serializable {
 	}
 
 	public Customer(String email, String firstname, String lastname, String address, String city, String country,
-			String phone, String zipcode, String password, Date registerDate, String customercol) {
+			String phone, String zipcode, String password, Date registerDate) {
 		this.email = email;
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -53,11 +56,10 @@ public class Customer implements java.io.Serializable {
 		this.zipcode = zipcode;
 		this.password = password;
 		this.registerDate = registerDate;
-		this.customercol = customercol;
 	}
 
 	public Customer(String email, String firstname, String lastname, String address, String city, String country,
-			String phone, String zipcode, String password, Date registerDate, String customercol, Set<Review> reviews,
+			String phone, String zipcode, String password, Date registerDate, Set<Review> reviews,
 			Set<BookOrder> bookOrders) {
 		this.email = email;
 		this.firstname = firstname;
@@ -69,7 +71,6 @@ public class Customer implements java.io.Serializable {
 		this.zipcode = zipcode;
 		this.password = password;
 		this.registerDate = registerDate;
-		this.customercol = customercol;
 		this.reviews = reviews;
 		this.bookOrders = bookOrders;
 	}
@@ -175,15 +176,6 @@ public class Customer implements java.io.Serializable {
 
 	public void setRegisterDate(Date registerDate) {
 		this.registerDate = registerDate;
-	}
-
-	@Column(name = "customercol", nullable = false, length = 45)
-	public String getCustomercol() {
-		return this.customercol;
-	}
-
-	public void setCustomercol(String customercol) {
-		this.customercol = customercol;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")

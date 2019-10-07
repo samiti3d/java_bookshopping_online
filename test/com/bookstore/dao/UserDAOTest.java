@@ -28,17 +28,17 @@ public class UserDAOTest {
 		entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
 		entityManager = entityManagerFactory.createEntityManager();
 		
-		userDAO = new UserDAO(entityManager);
+		userDAO = new UserDAO();
 	}
 	
 
 	@Test
-	public void test() throws NoSuchAlgorithmException {
+	public void testCreateUser() throws NoSuchAlgorithmException {
 
 		Users user1 = new Users();
 
-		user1.setFullName("admin");
-		user1.setEmail("admin@gmail.com");
+		user1.setFullName("batman");
+		user1.setEmail("batman@gmail.com");
 		
 		String password = "admin";
 		
@@ -58,7 +58,6 @@ public class UserDAOTest {
 		
 		
 		user1 = userDAO.create(user1);
-
 		assertTrue(user1.getUserId() > 0);
 	}
 	
@@ -172,8 +171,7 @@ public class UserDAOTest {
 	
 	@AfterClass
 	public static void tearDownClass() {
-		entityManager.close();
-		entityManagerFactory.close();
+		userDAO.close();
 	}
 
 

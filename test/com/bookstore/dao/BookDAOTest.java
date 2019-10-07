@@ -27,7 +27,7 @@ public class BookDAOTest extends BaseDAOTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		BaseDAOTest.setUpBeforeClass();
-		bookDAO = new BookDAO(entityManager);
+		bookDAO = new BookDAO();
 	}
 
 	@AfterClass
@@ -223,5 +223,53 @@ public class BookDAOTest extends BaseDAOTest {
 		
 	}
 	
+	@Test
+	public void listByCategory() {
+		int categoryId = 19;
+		List<Book> existBook = bookDAO.listByCategory(categoryId);
+		
+		assertTrue(existBook.size() > 0);
+	}
 	
+	@Test
+	public void listNewBook() {
+		List<Book> newBooks = bookDAO.listNewBooks();
+		for(Book abook : newBooks) {
+			System.out.println(abook.getTitle() + abook.getPublishedDate());
+		}
+		assertEquals(newBooks.size(), 4);
+	}
+	
+	@Test 
+	public void listSearch() {
+		String keyword = "spring";
+		List<Book> result = bookDAO.search(keyword);
+		
+		assertEquals(1, result.size());
+	}
+	
+	@Test 
+	public void listSearchAuthor() {
+		String keyword = "Craig";
+		List<Book> result = bookDAO.search(keyword);
+		
+		assertEquals(1, result.size());
+	}
+	
+	@Test
+	public void listSearchDescription() {
+		String description = "100,000 developers";
+		List<Book> result = bookDAO.search(description);
+		
+		assertEquals(1, result.size());
+	}
+	
+	@Test
+	public void contByCategoryTest() {
+		int categoryId =19;
+		long numbBooks = bookDAO.countByCategory(categoryId);
+		
+		assertTrue(numbBooks == 2);
+		
+	}
 }

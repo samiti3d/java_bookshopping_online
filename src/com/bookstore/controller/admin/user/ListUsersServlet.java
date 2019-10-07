@@ -19,7 +19,7 @@ public class ListUsersServlet extends BaseServlet {
         
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserServices userServices = new UserServices(request, response, entityManager);
+		UserServices userServices = new UserServices(request, response);
 		response.setCharacterEncoding("UTF-8");
 		userServices.listUser(null);
 	}

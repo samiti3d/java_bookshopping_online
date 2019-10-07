@@ -23,7 +23,7 @@ public class UpdateUserServlet extends BaseServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		UserServices userServices = new UserServices(request,response, entityManager);
+		UserServices userServices = new UserServices(request,response);
 		try {
 			userServices.updateUser();
 		} catch (NoSuchAlgorithmException e) {

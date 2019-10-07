@@ -22,20 +22,17 @@ import com.bookstore.entity.Category;
 
 public class BookServices {
 	
-	private EntityManager entityManager;
 	private BookDAO bookDAO;
 	private CategoryDAO categoryDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	
-
-	public BookServices(HttpServletRequest request, HttpServletResponse response, EntityManager entityManager) {
+	public BookServices(HttpServletRequest request, HttpServletResponse response) {
 		super();
-		this.entityManager = entityManager;
 		this.request = request;
 		this.response = response;
-		bookDAO = new BookDAO(entityManager);
-		categoryDAO = new CategoryDAO(entityManager);
+		bookDAO = new BookDAO();
+		categoryDAO = new CategoryDAO();
 	}
 	
 	public void listBooks() throws ServletException, IOException {
@@ -172,6 +169,7 @@ public class BookServices {
 	public void deleteBook() throws ServletException, IOException {
 		int bookId = Integer.parseInt(request.getParameter("id"));
 		Book existBook = bookDAO.get(bookId);
+		
 		if(existBook != null) {
 			bookDAO.delete(bookId);
 			String message = "The book is deleted complately";
@@ -181,6 +179,60 @@ public class BookServices {
 			listBooks(message);
 		}
 		
+	}
+
+	public void listByCategory() throws ServletException, IOException {
+		int categoryId = Integer.parseInt(request.getParameter("id"));
+		List<Category> listCategory = categoryDAO.listAll();
+		List<Book> listBooks = bookDAO.listByCategory(categoryId);
+		Category category = categoryDAO.get(categoryId);
+		
+		if(listBooks.size() > 0) {
+			request.setAttribute("listBooks", listBooks);
+		}else {
+			request.setAttribute("status", "Empty Book");
+		}
+		
+		request.setAttribute("listCategory", listCategory);
+		request.setAttribute("category", category);
+		
+		String page = "/frontend/book_list_by_category.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
+		requestDispatcher.forward(request, response);
+	}
+
+	public void viewBookDetail() throws ServletException, IOException {
+		int bookId = Integer.parseInt(request.getParameter("id"));
+		
+		Book book = bookDAO.get(bookId);
+		if(book == null) {
+			request.setAttribute("status", "Sorry, the book with ID " + bookId + "is not available.");
+		}else {
+			request.setAttribute("book", book);
+		}
+		
+		String page = "/frontend/book_detail.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
+		requestDispatcher.forward(request,response);
+		
+	}
+
+	public void search() throws ServletException, IOException {
+		String keyword = request.getParameter("keyword");
+		List<Book> result = null;
+		
+		if(keyword.equals("")) {
+			result = bookDAO.listAll();
+		}else {
+			result = bookDAO.search(keyword);
+		}
+		
+		request.setAttribute("keyword", keyword);
+		request.setAttribute("result", result);
+		
+		String page = "/frontend/search_result.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(page);
+		requestDispatcher.forward(request,response);
 	}
 
 }

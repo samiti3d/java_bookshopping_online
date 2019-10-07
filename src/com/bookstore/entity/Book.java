@@ -37,9 +37,21 @@ import com.bookstore.entity.Review;
 	@NamedQuery(name = "Book.findAll", query="SELECT b from Book b "),
 	@NamedQuery(name = "Book.findByTitle", query="SELECT b from Book b WHERE b.title = :title "),
 	@NamedQuery(name = "Book.countAll", query="SELECT COUNT(*) from Book b"),
+	@NamedQuery(name = "Book.countByCategory", query="SELECT COUNT(*) from Book b "
+			+ " WHERE b.category.categoryId = :catId"),
+	@NamedQuery(name = "Book.findByCategory", query="SELECT b from Book b JOIN "
+	+ "Category c ON b.category.categoryId = c.categoryId AND c.categoryId = :catId"),
+	@NamedQuery(name = "Book.listNew", query="SELECT b from Book b ORDER BY b.publishedDate DESC"),
+	@NamedQuery(name = "Book.search", query="SELECT b from Book b WHERE b.title LIKE '%' || :keyword || '%'" 
+			+ " OR b.author LIKE '%' || :keyword || '%' "
+			+ " OR b.description LIKE '%' || :keyword || '%' ")
 })
 public class Book implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer bookId;
 	private Category category;
 	private String title;
@@ -97,7 +109,7 @@ public class Book implements java.io.Serializable {
 		this.bookId = bookId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name = "category_id", nullable = false)
 	public Category getCategory() {
 		return this.category;

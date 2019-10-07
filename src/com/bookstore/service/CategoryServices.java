@@ -11,21 +11,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bookstore.dao.BookDAO;
 import com.bookstore.dao.CategoryDAO;
+import com.bookstore.entity.Book;
 import com.bookstore.entity.Category;
 
 public class CategoryServices  {
 	private CategoryDAO categoryDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private EntityManager entityManager;
 
 	public CategoryServices(HttpServletRequest request, HttpServletResponse response, EntityManager entityManager) {
 		this.request = request;
-		this.response = response;
-		this.entityManager = entityManager;
-		
-		categoryDAO = new CategoryDAO(entityManager);
+		this.response = response;		
+		categoryDAO = new CategoryDAO();
 
 	}
 	
@@ -116,18 +115,23 @@ public class CategoryServices  {
 		
 		int categoryId = Integer.parseInt(request.getParameter("id"));
 		Category categoryById = categoryDAO.get(categoryId);
+		BookDAO bookDAO = new BookDAO();
+		long numberOfBooks = bookDAO.countByCategory(categoryId);
 		
-		if(categoryById != null){
-			
-			categoryDAO.delete(categoryId);
-			request.setAttribute("status", "User ID " + categoryId + " has been deleted");
-		}else{
-			
-			request.setAttribute("status", "No Category ID " + categoryId +  "found");
+		if(numberOfBooks > 0) {
+			String message = "Cannot Delete! This ID: %d contains some book.";
+			message = String.format(message, numberOfBooks);
+			request.setAttribute("status", message);
+		}else {
+			if(categoryById != null){
+				categoryDAO.delete(categoryId);
+				request.setAttribute("status", "User ID " + categoryId + " has been deleted");
+			}else{
+				request.setAttribute("status", "No Category ID " + categoryId +  "found");
+			}
 		}
 		
 		listCategory();
-		
 	}
 	
 	
